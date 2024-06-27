@@ -3,6 +3,8 @@ let captureButton;
 let downloadButton;
 let frameColor = '#3498db'; // Frame color
 let frameThickness = 10; // Frame thickness
+let framePadding = 20; // Padding between video and frame
+let circleSize = 30; // Size of circles at corners
 
 function setup() {
   let canvas = createCanvas(640, 480);
@@ -22,21 +24,41 @@ function draw() {
   background(255);
   
   // Draw the video feed
-  image(video, 0, 0, width, height);
+  image(video, framePadding, framePadding, width - 2 * framePadding, height - 2 * framePadding);
   
   // Draw the frame
+  noFill();
   stroke(frameColor);
   strokeWeight(frameThickness);
-  noFill();
-  rect(frameThickness / 2, frameThickness / 2, width - frameThickness, height - frameThickness);
+  rect(framePadding, framePadding, width - 2 * framePadding, height - 2 * framePadding);
+  
+  // Draw circles at corners
+  drawCircles();
+}
+
+function drawCircles() {
+  fill(frameColor);
+  noStroke();
+  
+  // Top-left corner
+  ellipse(framePadding, framePadding, circleSize, circleSize);
+  
+  // Top-right corner
+  ellipse(width - framePadding, framePadding, circleSize, circleSize);
+  
+  // Bottom-left corner
+  ellipse(framePadding, height - framePadding, circleSize, circleSize);
+  
+  // Bottom-right corner
+  ellipse(width - framePadding, height - framePadding, circleSize, circleSize);
 }
 
 function captureImage() {
   // Capture the current frame from the video feed
-  let img = get(0, 0, width, height);
+  let img = get(framePadding, framePadding, width - 2 * framePadding, height - 2 * framePadding);
   
   // Display the captured image on the canvas
-  image(img, 0, 0, width, height);
+  image(img, framePadding, framePadding, width - 2 * framePadding, height - 2 * framePadding);
   
   // Create a download link for the captured image
   let downloadLink = document.getElementById('downloadLink');
